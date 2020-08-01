@@ -267,7 +267,9 @@ class KAMAIndicator(IndicatorMixin):
 
         min_periods = 0 if self._fillna else self._n
         ER_num = abs(close_values - np.roll(close_values, self._n))
+      
         ER_den = vol.rolling(self._n, min_periods=min_periods).sum()
+        ER_den[ER_den < 1e-10] = 1e-10
         ER = ER_num / ER_den
 
         sc = ((ER*(2.0/(self._pow1+1)-2.0/(self._pow2+1.0))+2/(self._pow2+1.0)) ** 2.0).values
